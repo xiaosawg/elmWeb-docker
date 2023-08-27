@@ -4,7 +4,7 @@
 
 #### 直接登录ssh后执行下面的命令
 ```bash
-    wget https://ghproxy.com/https://raw.githubusercontent.com/zelang/elmWeb-docker/main/elmWeb.sh && bash elmWeb.sh
+wget https://ghproxy.com/https://raw.githubusercontent.com/zelang/elmWeb-docker/main/elmWeb.sh && bash elmWeb.sh
 ````
 
 #### 搭建成功后，默认账号admin 密码 elmWeb2023 请及时访问后台修改密码
