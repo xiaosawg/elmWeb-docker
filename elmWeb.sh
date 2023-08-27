@@ -141,7 +141,7 @@ main(){
     if [ ! -d "/etc/elmWeb" ]; then
       mkdir /etc/elmWeb
     fi
-    wget https://ghproxy.com/https://raw.githubusercontent.com/zelang/elmWeb-docker/main/config.ini -O /etc/elmWeb/config.ini
+    wget https://ghproxy.com/https://raw.githubusercontent.com/zelang/elmWeb-docker/main/config.ini -O /etc/elmWeb/config.ini >/dev/null 2>&1
     # shellcheck disable=SC2181
     if [ $? -ne 0 ]; then
       echo -e "${Green} [×] 资源下载失败，请重试。 ${Font}" && exit 1
