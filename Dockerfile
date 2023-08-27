@@ -10,8 +10,8 @@ RUN set -xe && \
     cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
     echo "Asia/Shanghai" > /etc/timezone && \
     apk del tzdata && \
-    wget https://github.com/zelang/elmWeb-docker/releases/download/${VERSION}/elmWeb-{PLATFORM}.tar.gz && \
-    tar -xvf elmWeb-{PLATFORM}.tar.gz && rm -rf elmWeb-{PLATFORM}.tar.gz
+    wget https://github.com/zelang/elmWeb-docker/releases/download/${VERSION}/elmWeb-${PLATFORM}.tar.gz && \
+    tar -xvf elmWeb-${PLATFORM}.tar.gz && rm -rf elmWeb-${PLATFORM}.tar.gz
 
 RUN chmod +x /etc/elmWeb/elmWeb
 CMD ["/etc/elmWeb/elmWeb"]
