@@ -70,6 +70,7 @@ elif [[ x"${release}" == x"debian" ]]; then
 fi
 
 install_base() {
+    echo -e "${Green} [✓] 正在安装依赖中 ${Font}"
     if [[ x"${release}" == x"centos" ]]; then
       yum install epel-release -y >/dev/null 2>&1
       yum install wget curl tar crontabs socat ntpdate htpdate -y >/dev/null 2>&1
