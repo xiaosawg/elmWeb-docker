@@ -1,7 +1,20 @@
-# shellcheck disable=SC2154
-CSI=$($echo -e "\033[")
-CEND="${CSI}0m"
-CYELLOW="${CSI}1;33m"
+#!/bin/bash
+unlink $0
+#常规变量设置
+#fonts color
+Green="\033[32m"
+Red="\033[31m"
+Yellow="\033[33m"
+GreenBG="\033[42;37m"
+RedBG="\033[41;37m"
+Font="\033[0m"
+
+#notification information
+Info="${Green}[Info]${Font}"
+OK="${Green}[OK]${Font}"
+Error="${Red}[Error]${Font}"
+Notification="${Yellow}[Notification]${Font}"
+
 
 # check root
 # shellcheck disable=SC2046
@@ -43,6 +56,7 @@ fi
 
 if [[ x"${release}" == x"centos" ]]; then
     if [[ ${os_version} -le 6 ]]; then
+        # shellcheck disable=SC2154
         echo -e "${red}请使用 CentOS 7 或更高版本的系统！${plain}\n" && exit 1
     fi
 elif [[ x"${release}" == x"ubuntu" ]]; then
@@ -67,34 +81,35 @@ install_base() {
     fi
 }
 
-
-OUT_ALERT() {
-    echo -e "${CYELLOW} $1 ${CEND}"
-}
-
 DOCKER_INSTALL() {
     docker_exists=$(docker version 2>/dev/null)
     if [[ ${docker_exists} == "" ]]; then
-        OUT_ALERT "[✓] 正在安装docker"
-
-        curl -fsSL get.docker.com | bash 
+        echo -e "${Green} [✓] 正在安装docker ${Font}"
+        curl -fsSL get.docker.com | bash
+        # shellcheck disable=SC2181
+        if [ $? -ne 0 ]; then
+          echo -e "${Green} [×] 资源下载失败，请重试。 ${Font}" && exit 1
+        fi
     fi
 
     docker_compose_exists=$(docker-compose version 2>/dev/null)
     if [[ ${docker_compose_exists} == "" ]]; then
-        OUT_ALERT "[✓] 正在安装docker-compose"
-
+        echo -e "${Green} [✓] 正在安装docker-compose ${Font}"
         # shellcheck disable=SC2046
-        curl -L --fail https://ghproxy.com/https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+        curl -L --fail https://ghproxy.com/https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose >/dev/null 2>&1
+        # shellcheck disable=SC2181
+        if [ $? -ne 0 ]; then
+          echo -e "${Green} [×] 资源下载失败，请重试。 ${Font}" && exit 1
+        fi
         chmod +x /usr/local/bin/docker-compose && \
-	    ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+	      ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
     fi
 }
 
 SYNC_TIME() {
-     OUT_ALERT "[✓] 同步时间中"
+     echo -e "${Green} [✓] 同步时间中 ${Font}"
      timedatectl set-timezone Asia/Shanghai
-     ntpdate pool.ntp.org || htpdate -s www.baidu.com
+     ntpdate pool.ntp.org || htpdate -s www.baidu.com >/dev/null 2>&1
      hwclock -w
  }
 
@@ -104,7 +119,11 @@ DOCKER_UP() {
     cd /etc/elmWeb || exit
 
     if [ ! -f "/etc/elmWeb/docker-compose.yml" ]; then
-        wget https://ghproxy.com/https://raw.githubusercontent.com/zelang/elmWeb-docker/main/docker-compose.yml -O /etc/elmWeb/docker-compose.yml
+        wget https://ghproxy.com/https://raw.githubusercontent.com/zelang/elmWeb-docker/main/docker-compose.yml -O /etc/elmWeb/docker-compose.yml >/dev/null 2>&1
+        # shellcheck disable=SC2181
+        if [ $? -ne 0 ]; then
+          echo -e "${Green} [×] 资源下载失败，请重试。 ${Font}" && exit 1
+        fi
     fi
 
     docker-compose pull
@@ -124,7 +143,7 @@ main(){
     wget https://ghproxy.com/https://raw.githubusercontent.com/zelang/elmWeb-docker/main/config.ini -O /etc/elmWeb/config.ini
     # shellcheck disable=SC2181
     if [ $? -ne 0 ]; then
-      OUT_ALERT "[×] 资源下载失败，请重试。" && exit 1
+      echo -e "${Green} [×] 资源下载失败，请重试。 ${Font}" && exit 1
     fi
     # shellcheck disable=SC2162
     read -p "输入您购买的授权码(必须):  " AUTH_CODE
@@ -132,12 +151,11 @@ main(){
     # shellcheck disable=SC1073
     # shellcheck disable=SC1009
     if [[ ${AUTH_CODE} == "" ]];then
-      OUT_ALERT "[×] 授权码是必须输入项"
-      exit 1
+      echo -e "${Green} [×] 授权码是必须输入项，请重试。 ${Font}" && exit 1
     else
       random_string=$(openssl rand -base64 32 | tr -dc 'a-zA-Z0-9' | head -c 32)
-      sed -i '/auth_code/c \auth_code = '"${AUTH_CODE}"'' /etc/elmWeb/config.ini
-      sed -i '/secret/c \secret = '"${random_string}"'' /etc/elmWeb/config.ini
+      sed -i '/auth_code = /c \auth_code = '"${AUTH_CODE}"'' /etc/elmWeb/config.ini
+      sed -i '/secret = /c \secret = '"${random_string}"'' /etc/elmWeb/config.ini
     fi
   	SYNC_TIME
   	DOCKER_INSTALL
