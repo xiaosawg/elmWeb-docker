@@ -13,5 +13,5 @@ RUN set -xe && \
     wget https://github.com/zelang/elmWeb-docker/releases/download/${VERSION}/elmWeb-${PLATFORM}.tar.gz && \
     tar -xvf elmWeb-${PLATFORM}.tar.gz && rm -rf elmWeb-${PLATFORM}.tar.gz
 
-RUN chmod +x /etc/elmWeb/elmWeb
-CMD ["/etc/elmWeb/elmWeb"]
+RUN chmod +x /etc/elmWeb/elmWeb-${PLATFORM}
+CMD ["/etc/elmWeb/elmWeb-${PLATFORM}"]
