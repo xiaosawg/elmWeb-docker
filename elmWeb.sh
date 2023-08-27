@@ -71,12 +71,12 @@ fi
 
 install_base() {
     if [[ x"${release}" == x"centos" ]]; then
-      yum install epel-release -y
-      yum install wget curl tar crontabs socat ntpdate htpdate -y
-      systemctl stop firewalld.service
-      systemctl disable firewalld.service
+      yum install epel-release -y >/dev/null 2>&1
+      yum install wget curl tar crontabs socat ntpdate htpdate -y >/dev/null 2>&1
+      systemctl stop firewalld.service >/dev/null 2>&1
+      systemctl disable firewalld.service >/dev/null 2>&1
     else
-      apt install wget curl tar cron socat ntpdate htpdate -y
+      apt install wget curl tar cron socat ntpdate htpdate -y >/dev/null 2>&1
 		  ufw stop && ufw disable >/dev/null 2>&1
     fi
 }
