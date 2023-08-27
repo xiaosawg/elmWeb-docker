@@ -7,7 +7,7 @@ services:
     network_mode: host
     privileged: true
     volumes:
-      - ./config.ini:/etc/elmWeb/config.ini
+      - /etc/elmWeb/config.ini:/etc/elmWeb/config.ini
     logging:
       driver: "json-file"
       options:
