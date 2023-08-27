@@ -7,6 +7,8 @@
     wget https://ghproxy.com/https://raw.githubusercontent.com/zelang/elmWeb-docker/main/elmWeb.sh && bash elmWeb.sh
 ````
 
+#### 搭建成功后，默认账号admin 密码 elmWeb2023 请及时访问后台修改密码
+
 ## 手动搭建：
 
 #### 步骤一
@@ -28,11 +30,11 @@ docker run -dit \
 ```
 
 ### 一些小提示：
-1. 查看日志：`docker logs elmweb`
-2. 重启：`docker restart elmweb`
-3. 停止并删除：`docker stop elmweb && docker rm elmweb`
+1. 查看日志：`docker logs elmWeb`
+2. 重启：`docker restart elmWeb`
+3. 停止并删除：`docker stop elmWeb && docker rm elmWeb`
 4. 更新：
-- `docker stop elmweb && docker rm elmweb`
+- `docker stop elmWeb && docker rm elmWeb`
 - `docker rmi marisn/elmweb`
 - `docker pull marisn/elmweb`
 - 执行步骤二
