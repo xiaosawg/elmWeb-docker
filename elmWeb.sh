@@ -131,6 +131,7 @@ DOCKER_UP() {
 }
 
 main(){
+  clear
   echo -e "欢迎使用ElmWeb Docker一键部署脚本"
   # shellcheck disable=SC2162
   read -p "输入Y/y确认安装 跳过安装请直接回车:  " CONFIRM
