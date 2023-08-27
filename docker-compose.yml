@@ -1,6 +1,6 @@
 version: '3'
 services:
-  relay:
+  elmWeb:
     image: "marisn/elmweb:latest"
     container_name: elmWeb
     restart: always
