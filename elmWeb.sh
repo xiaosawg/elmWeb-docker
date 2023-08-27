@@ -155,8 +155,8 @@ main(){
       echo -e "${Green} [×] 授权码是必须输入项，请重试。 ${Font}" && exit 1
     else
       random_string=$(openssl rand -base64 32 | tr -dc 'a-zA-Z0-9' | head -c 32)
-      sed -i '/auth_code = /c \auth_code = '"${AUTH_CODE}"'' /etc/elmWeb/config.ini
-      sed -i '/secret = /c \secret = '"${random_string}"'' /etc/elmWeb/config.ini
+      sed -i 's/auth_code =.*/auth_code = '"${AUTH_CODE}"'/' /etc/elmWeb/config.ini
+      sed -i 's/secret =.*/secret = '"${random_string}"'/' /etc/elmWeb/config.ini
     fi
   	SYNC_TIME
   	DOCKER_INSTALL
