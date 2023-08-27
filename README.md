@@ -21,7 +21,7 @@
 ```shell
 docker run -dit \
   -v /etc/elmWeb/config.ini:/etc/elmWeb/config.ini \
-  -p 8081:8081 \
+  --network host \
   --name elmWeb \
   --restart unless-stopped \
   marisn/elmweb:latest
