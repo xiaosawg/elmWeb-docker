@@ -1,4 +1,4 @@
-FROM golang:latest
+FROM golang:alpine
 
 ENV VERSION 1.0.0
 
@@ -6,7 +6,7 @@ WORKDIR /etc/elmWeb
 
 RUN set -xe && \
     UNAME=$(uname -m) && if [ "$UNAME" = "x86_64" ];then export PLATFORM=amd64; else export PLATFORM=arm64; fi && \
-    apk add tzdata && \
+    apk add --no-cache tzdata && \
     cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
     echo "Asia/Shanghai" > /etc/timezone && \
     apk del tzdata && \
